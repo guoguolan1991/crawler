@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import csv
+import time
 
 cookie_str = 'll="118172"; bid=Z7-HMUKg_b0; __yadk_uid=edxjMbtj4qHVi65LkRStDygY3RDveMjR; gr_user_id=7ab58ce7-ef8f-' \
           '4c68-8dc5-55e4adfc17b2; viewed="26437066_24746415"; _vwo_uuid_v2=FA170A79A6002694A14F6CDFD2448E90|ac5' \
@@ -93,16 +94,18 @@ def get_entries(urlnumber):
     # increase the num so that we can crawler the next page
 
 
-with open('douban_zhanlang2.csv', 'w') as output:
+with open('douban_zhanlang.csv', 'w') as output:
     writer = csv.writer(output, delimiter=',', lineterminator='\n')
     entries = []
     while urlnumber < maxnum:
+        time.sleep(0.4)
         entries.extend(get_entries(urlnumber))
         urlnumber = urlnumber + 21
         if len(entries) % 100 == 0:
             writer.writerows(entries)
+            print entries
             entries = []
     writer.writerows(entries)
 
 # soup.decompose()
-print "Wrote to douban_zhanlang2.csv"
+print "Wrote to douban_zhanlang.csv"
